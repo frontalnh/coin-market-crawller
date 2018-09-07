@@ -12,7 +12,7 @@ const getCurrencyList = require('./currencyList');
 const currencyList = getCurrencyList();
 
 const bithumbApiList = [];
-const bitMexApiList = [];
+const bitMexApiList = ['XBT', 'ADA', 'BCH', 'EOS', 'ETH', 'LTC', 'TRX', 'XRP'];
 
 for (var i = 0; i < currencyList.length; i++) {
   bithumbApiList.push(
@@ -44,10 +44,13 @@ const bithumbCall = function() {
 };
 
 const bitmexCall = function() {
-  const option = createBitemexOption('GET', {
-    symbol: currencyList[count2 % currencyList.length]
-  });
+  const option = createBitemexOption(
+    bitMexApiList[count2 % bitMexApiList.length]
+  );
+
   console.log(option);
+  console.log(bithumbApiList[count2 % bitMexApiList.length]);
+
   axios
     .get(
       'https://www.bitmex.com/api/v1/quote?symbol=' +
@@ -57,16 +60,16 @@ const bitmexCall = function() {
     .then(
       res => {
         console.log('result:', res);
-        //   purchaseModel.create({
-        //     price: res.data.data[0].price,
-        //     type: currencyList[count2 % currencyList.length],
-        //     createdAt: Date.now()
-        //   });
+        purchaseModel.create({
+          price: res.data.data[0].price,
+          type: bitMexApiList[count2 % bitMexApiList.length],
+          createdAt: Date.now()
+        });
 
         count2++;
       },
       err => {
-        console.log(err);
+        // console.log(err);
       }
     );
 };
