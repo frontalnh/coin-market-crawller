@@ -1,23 +1,19 @@
-module.exports = function createBitmaxOption(verb, data) {
-  const apiRoot = '/api/v1/';
-  const qs = require('qs');
+module.exports = function createBitmaxOption(tokenName) {
   const crypto = require('crypto');
-  const apiKey = 'FJmvRPFktcTYDBF5GMKEnTbU';
-  const apiSecret = '6XqCuE87TNN7GIB76GUlzZNETLbbYtVtCJr0Lh9rIbXrSe2o';
+  const apiKey = 'nKxJTgCo5p8iu3av9uU5pnnw';
+  const apiSecret = 'Fa7iuw_-aA2olBXdsrV3Yg1P9g2K-IuLNVZB3XSCPCCtdl19';
 
   const expires = new Date().getTime() + 60 * 1000; // 1 min in the future
-
-  let query = '',
-    postBody = '';
-  if (verb === 'GET') query = '?' + qs.stringify(data);
-  // Pre-compute the reqBody so we can be sure that we're using *exactly* the same body in the request
-  // and in the signature. If you don't do this, you might get differently-sorted keys and blow the signature.
-  else postBody = JSON.stringify(data);
+  console.log(expires);
+  console.log(tokenName);
   const signature = crypto
     .createHmac('sha256', apiSecret)
-    .update('GET' + apiRoot + 'quote' + query + expires + JSON.stringify(data))
+    .update(
+      'GET' + '/api/v1/quote?symbol=' + tokenName + '' + expires.toString()
+    )
     .digest('hex');
 
+  console.log(signature);
   const headers = {
     'content-type': 'application/json',
     accept: 'application/json',
@@ -29,7 +25,7 @@ module.exports = function createBitmaxOption(verb, data) {
   };
 
   const requestOptions = {
-    method: verb,
+    method: 'GET',
     headers
   };
 
