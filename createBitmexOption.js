@@ -1,11 +1,15 @@
 module.exports = function createBitmaxOption(tokenName) {
   const crypto = require('crypto');
+
   const apiKey = 'nKxJTgCo5p8iu3av9uU5pnnw';
   const apiSecret = 'Fa7iuw_-aA2olBXdsrV3Yg1P9g2K-IuLNVZB3XSCPCCtdl19';
 
-  const expires = new Date().getTime() + 60 * 1000; // 1 min in the future
+  const expires = Math.ceil((new Date().getTime() + 60 * 1000) / 10); // 1 min in the future
   console.log(expires);
   console.log(tokenName);
+  console.log(
+    'GET' + '/api/v1/quote?symbol=' + tokenName + '' + expires.toString()
+  );
   const signature = crypto
     .createHmac('sha256', apiSecret)
     .update(

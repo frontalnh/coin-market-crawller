@@ -26,7 +26,7 @@ var count2 = 0;
 const bithumbCall = function() {
   axios.get(bithumbApiList[count1 % bithumbApiList.length]).then(
     res => {
-      //   console.log('result:', res.data);
+      console.log('result:', res.data.data[0]);
       purchaseModel.create({
         price: res.data.data[0].price,
         type: bithumbApiList[count1 % bithumbApiList.length].split('/')[
@@ -49,7 +49,7 @@ const bitmexCall = function() {
   );
 
   console.log(option);
-  console.log(bithumbApiList[count2 % bitMexApiList.length]);
+  console.log(bitMexApiList[count2 % bitMexApiList.length]);
 
   axios
     .get(
